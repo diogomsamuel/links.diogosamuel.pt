@@ -1,113 +1,255 @@
+import React, { useState, useEffect } from "react";
+import Head from "next/head";
+import Script from "next/script";
 import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { motion } from "framer-motion";
+import Layout from "../components/Layout";
+import LinkCard from "../components/LinkCard";
+import SocialIcons from "../components/SocialIcons";
+import { FaInstagram, FaYoutube, FaTiktok, FaXTwitter, FaGithub, FaGlobe, FaCode, FaBriefcase } from "react-icons/fa6";
+import { CgWebsite } from "react-icons/cg";
+import Link from "next/link";
 
 export default function Home() {
+  const [timeTheme, setTimeTheme] = useState("");
+  const [greeting, setGreeting] = useState("");
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    // Definir tema baseado na hora do dia
+    const hour = new Date().getHours();
+    let currentTheme = "";
+    let currentGreeting = "";
+
+    if (hour >= 5 && hour < 12) {
+      currentTheme = "morning-mode";
+      currentGreeting = "Bom dia!";
+    } else if (hour >= 12 && hour < 18) {
+      currentTheme = "afternoon-mode";
+      currentGreeting = "Boa tarde!";
+    } else if (hour >= 18 && hour < 22) {
+      currentTheme = "evening-mode";
+      currentGreeting = "Boa noite!";
+    } else {
+      currentTheme = "night-mode";
+      currentGreeting = "Boa noite!";
+    }
+
+    setTimeTheme(currentTheme);
+    setGreeting(currentGreeting);
+
+    // Prefetch das imagens dos links populares
+    const prefetchImages = [
+      'https://diogosamuel.pt/images/profile.jpeg',
+      'https://cdn-icons-png.flaticon.com/512/174/174855.png',
+      'https://cdn-icons-png.flaticon.com/512/3670/3670151.png'
+    ];
+    
+    prefetchImages.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+    });
+  }, []);
+
+  const handleLinkClick = (linkName) => {
+    // Enviar o clique para a API (sem aguardar resposta para não bloquear a navegação)
+    fetch('https://api.diogosamuel.pt/api/stats/links/add-click', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ linkName }),
+      // Usado para permitir que a solicitação ocorra em segundo plano sem bloquear a navegação
+      keepalive: true
+    }).catch(error => {
+      console.error('Erro ao registrar clique:', error);
+    });
+  };
+
+  const links = [
+    {
+      name: "Instagram",
+      url: "https://instagram.com/diogosvmuel",
+      icon: <FaInstagram />,
+      description: "Porque toda a gente precisa de validação social.",
+      priority: true
+    },
+    {
+      name: "Youtube",
+      url: "https://youtube.com/@diogosvmuel",
+      icon: <FaYoutube />,
+      description: "Os vídeos que ninguém tem paciência para ver."
+    },
+    {
+      name: "TikTok",
+      url: "https://tiktok.com/@diogomsamuel",
+      icon: <FaTiktok />,
+      description: "Conteúdo de qualidade duvidosa em 15 segundos."
+    },
+    {
+      name: "X",
+      url: "https://x.com/diogosvmuel",
+      icon: <FaXTwitter />,
+      description: "Onde deito cá para fora o que me vai na cabeça."
+    },
+    {
+      name: "Website",
+      url: "https://diogosamuel.pt",
+      icon: <FaGlobe />,
+      description: "Acredita, um dia isto vai estar pronto."
+    },
+    {
+      name: "Portfolio",
+      url: "https://portfolio.diogosamuel.pt",
+      icon: <FaBriefcase />,
+      description: "Se quiseres ver o que faço quando trabalho."
+    },
+    {
+      name: "GitHub",
+      url: "https://github.com/diogomsamuel",
+      icon: <FaGithub />,
+      description: "Código que escrevo enquanto tento parecer ocupado."
+    }
+  ];
+
+  const fadeInUp = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: { 
+        type: "spring",
+        damping: 15
+      }
+    }
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/pages/index.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      <Head>
+        <title>Diogo Samuel • Links</title>
+        <meta name="description" content="Code, lift, repeat — building strength in both worlds." />
+        <meta property="og:title" content="Diogo Samuel • Links" />
+        <meta property="og:description" content="Code, lift, repeat — building strength in both worlds." />
+        <meta property="og:image" content="https://diogosamuel.pt/images/profile.jpeg" />
+        <meta property="og:url" content="https://links.diogosamuel.pt" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID || 'G-PLACEHOLDER'}`}
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID || 'G-PLACEHOLDER'}');
+          `,
+        }}
+      />
+
+      <Layout className={timeTheme}>
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.1
+              }
+            }
+          }}
+          className="flex flex-col items-center justify-center w-full max-w-lg mx-auto px-4"
+        >
+          <motion.div variants={fadeInUp} className="relative mb-6">
+            <div 
+              className={`profile-image ${imageLoaded ? 'loaded-image' : 'loading-image'}`}
+            >
+              <Image
+                src="https://diogosamuel.pt/images/profile.jpeg"
+                alt="Diogo Samuel"
+                width={180}
+                height={180}
+                priority
+                onLoad={() => setImageLoaded(true)}
+                unoptimized={true}
+                className="profile-img"
+              />
+              <div className="profile-glow"></div>
+            </div>
+          </motion.div>
+
+          <motion.h1 variants={fadeInUp} className="name-title text-2xl font-semibold">
+            Diogo Samuel
+          </motion.h1>
+
+          <motion.div variants={fadeInUp}>
+            <p className="profile-description mt-2">
+              Code, lift, repeat — building strength in both worlds.
+            </p>
+            <div className="subtle-divider"></div>
+          </motion.div>
+
+          <motion.div variants={fadeInUp} className="w-full max-w-md mt-2 mb-6">
+            <SocialIcons />
+          </motion.div>
+          
+          <motion.div variants={fadeInUp} className="mb-4">
+            <p className="text-center mb-2 text-sm font-medium">
+              <span className="greeting-badge">{greeting} Encontra-me online</span>
+            </p>
+          </motion.div>
+
+          {links.map((link, index) => (
+            <motion.div
+              key={link.name}
+              variants={fadeInUp}
+              custom={index}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full"
+            >
+              <LinkCard
+                name={link.name}
+                url={link.url}
+                icon={link.icon}
+                description={link.description}
+                priority={link.priority}
+                onClick={() => handleLinkClick(link.name)}
+              />
+            </motion.div>
+          ))}
+
+          <motion.p
+            variants={fadeInUp}
+            className="mt-8 text-xs opacity-50 italic text-center sarcastic-footer"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+            © {new Date().getFullYear()} Diogo Samuel • 
+            &ldquo;Site feito com o mínimo esforço possível&rdquo;
+            <Link 
+              href="/statistics" 
+              className="stats-link" 
+              onContextMenu={(e) => {
+                e.preventDefault();
+                const adminSecret = prompt("Para acesso administrativo, digite sua senha:");
+                if (adminSecret) {
+                  window.location.href = `/statistics?admin=${adminSecret}`;
+                }
+              }}
+            >
+              📊
+            </Link>
+          </motion.p>
+        </motion.div>
+      </Layout>
+    </>
   );
 }

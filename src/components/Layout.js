@@ -19,11 +19,8 @@ export default function Layout({ children, className }) {
       <Head>
         <title>Diogo Samuel • Links</title>
         <meta name="description" content="Links para todas as redes sociais e conteúdos de Diogo Samuel" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#0A0A0A" />
-        <meta name="color-scheme" content="dark" />
-        <meta name="supported-color-schemes" content="dark" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#FF8A00" />
         <meta property="og:title" content="Diogo Samuel • Links" />
         <meta property="og:description" content="Links para todas as redes sociais e conteúdos de Diogo Samuel" />
         <meta property="og:type" content="website" />
@@ -34,7 +31,7 @@ export default function Layout({ children, className }) {
       
       <div className="noise-overlay"></div>
       
-      <div className="flex flex-col min-h-screen justify-center" style={{ backgroundColor: '#0A0A0A' }}>
+      <div className="flex flex-col min-h-screen justify-center">
         <main className="flex flex-col py-16 px-2 items-center flex-grow">
           {children}
         </main>

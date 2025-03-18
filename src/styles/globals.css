@@ -67,20 +67,21 @@ body {
   align-items: center;
   padding: 16px;
   margin: 8px 0;
-  background-color: #ffffff;
-  border: 1px solid var(--card-border);
+  background-color: rgba(20, 20, 20, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   text-decoration: none;
   position: relative;
   overflow: hidden;
-  color: #000000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .link-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 138, 0, 0.3);
 }
 
 .link-card .icon {
@@ -90,7 +91,7 @@ body {
   width: 24px;
   height: 24px;
   margin-right: 12px;
-  color: #000000;
+  color: var(--brand-primary);
 }
 
 .link-card .text {
@@ -101,13 +102,13 @@ body {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
-  color: #000000;
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .link-card p {
   margin: 4px 0 0;
   font-size: 0.85rem;
-  color: #666666;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .link-card .right-area {
@@ -116,8 +117,8 @@ body {
 }
 
 .arrow-indicator {
-  color: #000000;
-  opacity: 0.5;
+  color: rgba(255, 255, 255, 0.6);
+  opacity: 0.8;
 }
 
 /* Profile Section */
@@ -182,18 +183,25 @@ body {
 
 /* Greeting Badge */
 .greeting-badge {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: rgba(20, 20, 20, 0.95);
+  color: var(--brand-primary);
   padding: 4px 12px;
   border-radius: 16px;
   font-size: 0.85rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 138, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Priority Links */
 .priority-link {
-  border-width: 2px;
-  border-color: #ffffff;
+  background-color: rgba(20, 20, 20, 0.98);
+  border-color: rgba(255, 138, 0, 0.3);
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.25);
+}
+
+.priority-link:hover {
+  border-color: rgba(255, 138, 0, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 /* Footer */
@@ -235,15 +243,16 @@ body {
 
 /* Stats Card */
 .stats-card {
-  background-color: #ffffff;
+  background-color: rgba(20, 20, 20, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .stats-card h2 {
-  color: #000000;
+  color: rgba(255, 255, 255, 0.95);
   font-size: 1.2rem;
   margin: 0 0 16px;
   display: flex;
@@ -259,28 +268,29 @@ body {
 }
 
 .stat-item {
-  background-color: #f5f5f5;
+  background-color: rgba(30, 30, 30, 0.95);
   padding: 12px;
   border-radius: 8px;
   text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .stat-label {
-  color: #666666;
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.8rem;
   display: block;
   margin-bottom: 4px;
 }
 
 .stat-value {
-  color: #000000;
+  color: var(--brand-primary);
   font-size: 1.2rem;
   font-weight: 600;
   display: block;
 }
 
 .stat-subvalue {
-  color: #666666;
+  color: rgba(255, 255, 255, 0.5);
   font-size: 0.75rem;
   display: block;
   margin-top: 2px;
@@ -299,21 +309,19 @@ body {
 }
 
 .link-stat-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background-color: rgba(30, 30, 30, 0.95);
   padding: 8px 12px;
-  background-color: #f5f5f5;
   border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .link-name {
-  color: #000000;
+  color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
 }
 
 .link-count {
-  color: #666666;
+  color: var(--brand-primary);
   font-size: 0.9rem;
 }
 
